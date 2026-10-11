@@ -46,7 +46,3 @@ Each signal can move for innocent reasons: a hard workout raises resting HR, a l
 This is a personal signal, not a diagnosis. The worked example is one person and one illness, looked at after the fact. Overtraining, a few bad nights, travel or heavy drinking can produce a similar picture. The next step is to lock the formula in advance, run it live across many people, and log illness separately. If you want to be part of that, reply to the post or open an issue.
 
 If you feel unwell, talk to a doctor.
-
-## License
-
-MIT. Built by [@Angela_Busheska](https://x.com/Angela_Busheska) at Continuum.
