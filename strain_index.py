@@ -51,6 +51,10 @@ SMOOTH_DAYS = {
 }
 
 BASELINE_DAYS = 28
+# Real exports have gaps (nights without the strap, charging). Windows are
+# measured in calendar days, and a day gets a score as long as at least
+# this many of the previous 28 days have data.
+MIN_BASELINE_OBS = 14
 
 # Column names WHOOP uses in its "Physiological Cycles" export, plus a few
 # common alternatives. Matching is case-insensitive and ignores punctuation.
@@ -125,10 +129,16 @@ def load(path: str) -> pd.DataFrame:
 def compute(df: pd.DataFrame) -> pd.DataFrame:
     out = pd.DataFrame(index=df.index)
     for key, w in WEIGHTS.items():
-        smoothed = df[key].rolling(SMOOTH_DAYS[key], min_periods=SMOOTH_DAYS[key]).mean()
+        # Calendar-day windows so gaps in the export don't break the math.
+        smoothed = df[key].rolling(f"{SMOOTH_DAYS[key]}D", min_periods=1).mean()
         # Baseline is the previous 28 days, not including today (hence shift).
-        base = smoothed.shift(1).rolling(BASELINE_DAYS, min_periods=BASELINE_DAYS)
-        z = (smoothed - base.mean()) / base.std()
+        base = smoothed.shift(1, freq="D").rolling(
+            f"{BASELINE_DAYS}D", min_periods=MIN_BASELINE_OBS
+        )
+        mean, std = base.mean().reindex(df.index), base.std().reindex(df.index)
+        z = (smoothed - mean) / std
+        # No raw reading today means no score today.
+        z[df[key].isna()] = float("nan")
         out[f"z_{key}"] = SIGN[key] * z
         out[f"c_{key}"] = w * out[f"z_{key}"]
     contrib = out[[f"c_{k}" for k in WEIGHTS]]

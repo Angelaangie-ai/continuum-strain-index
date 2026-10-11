@@ -20,7 +20,7 @@ A CSV of daily data (WHOOP: Physiological Cycles + Sleeps export). Find these co
 3. Flip signs so "worse" is always positive: less sleep, higher RHR, lower HRV, more sleep debt, higher breathing rate.
 4. Weighted sum: 0.35 sleep + 0.25 RHR + 0.20 HRV + 0.15 sleep debt + 0.05 breathing.
 5. Scale so 50 is a normal day: index = 50 + 10 x weighted sum.
-6. Skip any day with missing data or fewer than 28 days of baseline.
+6. Skip any day with missing data, or with fewer than 14 days of data in its 28-day baseline window (real exports have gaps).
 
 ## Output
 - A bar chart of the daily index over time with a dashed line at 50.

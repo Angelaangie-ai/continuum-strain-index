@@ -35,7 +35,7 @@ This prints your last 14 days, saves a chart to `strain_index.png`, and tells yo
 4. **Weight and sum.** `0.35 × sleep + 0.25 × resting HR + 0.20 × HRV + 0.15 × sleep debt + 0.05 × breathing rate`
 5. **Scale.** `index = 50 + 10 × weighted sum`. So 60 means your signals are, on average, one standard deviation worse than your own normal.
 
-Days with missing data, or without 28 days of history behind them, get no score.
+Days with missing data get no score, and so do days with fewer than 14 days of data in the 28-day window behind them. Real exports have gaps, so the windows are calendar days rather than consecutive readings.
 
 ### Why one number instead of five charts
 
