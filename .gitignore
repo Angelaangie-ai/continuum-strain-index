@@ -1,0 +1,5 @@
+*.csv
+*.png
+!example_chart.png
+__pycache__/
+.DS_Store
